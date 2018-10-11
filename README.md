@@ -9,6 +9,7 @@
 3) API end-points
 
     a) POST /users/create
+
         req body = {
                     "name" : "TestName1-edit",
                     "email" : "a@b.com",
@@ -16,6 +17,7 @@
                   }
 
     b) POST /auth/login
+
         req body = {
                     "email" : "a@b.com",
                     "password": "password123"
@@ -24,6 +26,7 @@
         The response header will contain the `jwt token`, we need to send this token in below 'reset' and 'forgot' api.
 
     c) PUT /users/reset
+
         req body = {
                     "name" : "TestName1-edit",
                     "email" : "a@b.com",
@@ -33,9 +36,11 @@
         here `key` will be email id ->>> data will updated for the given email-id
 
     d) DELETE users/forgot
+
         req body = {
                     "email" : "a@b.com"
                   }
+                  
         here `key` will be email id ->>> the given email-id data will get deleted.
 
 4) run the test files as
