@@ -10,7 +10,6 @@ describe('user.generateAuthToken', () => {
       _id: new mongoose.Types.ObjectId().toHexString()
     };
     const user = new User(payLoad);
-    console.log(user);
     const token = user.generateAuthToken();
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
     expect(decoded).toMatchObject(payLoad);

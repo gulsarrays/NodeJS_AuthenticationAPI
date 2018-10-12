@@ -5,7 +5,7 @@ const { userModel: User } = require('../../models/user');
 
 let appServer;
 
-describe('/repos', () => {
+describe('/users', () => {
   beforeEach(() => {
     appServer = require('../../app');
   });
