@@ -61,8 +61,16 @@ describe('auth middelware', () => {
     emailId = 'a@b.com';
     userpass = 'password1';
     const res = await exec();
-    // console.log(res);
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain('TestName1');
+  });
+
+  it('should show the correct welcome message', async () => {
+    emailId = 'a@b.com';
+    userpass = 'password1';
+    const res = await exec();
+
+    expect(res.text).toContain('TestName1');
   });
 });

@@ -25,34 +25,38 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+/* eslint-disable */
 userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
   return token;
 };
+/* eslint-enable */
 
-const userModel = mongoose.model('Users', userSchema);
+const UserModel = mongoose.model('Users', userSchema);
 
 const User = {};
 
+async function passwordHash(password) {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPass = await bcrypt.hash(password, salt);
+  return hashedPass;
+}
+
 User.create = async (name, email, password) => {
   const hashedPass = await passwordHash(password);
-  let user = new userModel({ name, email, password: hashedPass });
+  let user = new UserModel({ name, email, password: hashedPass });
   user = await user.save();
   return user;
 };
 
 User.details = async email => {
-  const user = userModel.findOne({ email });
+  const user = UserModel.findOne({ email });
   return user;
-};
-
-User.login = inputData => {
-  return 'user logged in successfuly';
 };
 
 User.reset = async (name, email, password) => {
   const hashedPass = await passwordHash(password);
-  const user = await userModel.findOneAndUpdate(
+  const user = await UserModel.findOneAndUpdate(
     { email },
     { name, password: hashedPass },
     { new: true }
@@ -61,7 +65,7 @@ User.reset = async (name, email, password) => {
 };
 
 User.forgot = async email => {
-  const user = await userModel.findOneAndRemove({ email });
+  const user = await UserModel.findOneAndRemove({ email });
   return user;
 };
 
@@ -84,13 +88,7 @@ function validation(user) {
   return Joi.validate(user, schema);
 }
 
-async function passwordHash(password) {
-  const salt = await bcrypt.genSalt(10);
-  const passwordHash = await bcrypt.hash(password, salt);
-  return passwordHash;
-}
-
 module.exports.User = User;
-module.exports.userModel = userModel;
+module.exports.userModel = UserModel;
 module.exports.validation = validation;
 module.exports.passwordHash = passwordHash;
